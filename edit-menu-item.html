@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link type="text/css" rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <title>Edit Menu Item</title>
+
+
+
+<script>
+    function fn1()
+    {
+        var urlParams = new URLSearchParams(window.location.search);
+        var menu=urlParams.get('menu');
+        //split the menu which is nothing but a row
+   
+        var cols=menu.split(",");
+        document.getElementById("prodname").value=cols[0].trim();
+        document.getElementById("price").value=cols[1];
+        //select the radio as per value yes or No
+        if(cols[2]=="Yes")
+        {
+            document.getElementById("rdoYes").checked=true;
+        }
+        else
+        {
+            document.getElementById("rdoNo").checked=true;
+        }
+            //alert(cols[3]);
+            document.getElementById("dateofLaunch").value=cols[3];
+
+            var categories=["Starters", "Main Course", "Dessert", "Drinks"];   
+          // loop the array and each category
+        /*  var optionStr="";
+          for(var i=0;i<categories.length;i++)
+          {
+            optionStr=optionStr+"<option>";
+
+            optionStr=optionStr+categories[i];
+            optionStr=optionStr+"</option>";
+           }
+           document.getElementById("ddlCategory").innerHTML=optionStr;
+           */
+           
+
+
+           var optionStr="";
+          for(var i=0;i<categories.length;i++)
+          {
+            optionStr=optionStr+"<option";
+            if(cols[4]==categories[i])
+            optionStr=optionStr+" selected";
+            optionStr=optionStr+">"+categories[i];
+            optionStr=optionStr+"</option>";
+           }
+           document.getElementById("category").innerHTML=optionStr;
+
+           if(cols[5]=='Yes')
+           {
+               document.getElementById("freeDelivery").checked=true;
+           }
+           else{
+               document.getElementById("freeDelivery").checked=false;
+           }
+                
+    }
+
+
+    function fnSave()
+            {      
+                //alert('fnSave');
+                //x is a row
+                var x="";                   //it should be like Sandwich,Price,yes,date,No;
+                x=x+document.getElementById("prodname").value.trim()+",";
+                x=x+document.getElementById("price").value.trim()+",";
+               
+           //    alert(x);
+            //   alert(document.getElementById("rdoYes").checked);
+                if(document.getElementById("rdoYes").checked==true)
+                    x=x+"Yes,";
+                else
+                    x=x+"No,";
+           //         alert(x);
+                x=x+document.getElementById("dateofLaunch").value.trim()+",";
+           //     alert(x);
+                x=x+document.getElementById("category").value.trim()+",";
+            //    alert(x);
+            //    alert(document.getElementById("freeDelivery").checked);
+                if(document.getElementById("freeDelivery").checked==true)
+                    x=x+"Yes;";
+                else
+                    x=x+"No;";
+             //       alert(x);
+                
+
+
+
+
+                var newCols=x.split(",");
+               //alert(x);
+                //How to remove from cart
+                //retrieve the cart rows. loop them and find if it matches the required row, ignored that row.
+
+                //add all other rows to the cart
+
+                    var newMenu="";
+                    var menu=localStorage.getItem("menu");
+                    if(menu==undefined || menu=="" || menu==null || menu=='null')
+                    {
+                        //alert('Nothing to Edit');
+                        return;
+                    }
+
+                    var rows=menu.split(";");
+                   // alert(rows[i]);
+                    for(var i=0;i<rows.length;i++)
+                    {
+                       
+                        if(rows[i].trim()=="")
+                            continue;
+                        var cols=rows[i].split(",");
+                        if(cols[0].trim()=="")
+                            continue;
+                           // alert(rows[i]);
+                        var itemName=cols[0].trim();
+                        var newItemName=newCols[0].trim();
+                        if(itemName==newItemName)
+                        {
+                            //found the row to update
+                            newMenu=newMenu+x;
+                        }
+                       else newMenu=newMenu+rows[i].trim()+";";
+
+                    }
+                   // alert("Old Menu:"+menu+"<br/>new Menu:"+newMenu);
+                    localStorage.setItem("menu",newMenu);
+                   document.getElementById("message").innerHTML="<font color=green><b>Menu Item updated successfully</b></font>"; 
+                   
+                   return;
+                   
+                }
+
+</script>
+
+</head>
+<body onload ="fn1()">
+        
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+                <header class="mdl-layout__header">
+                    <div class="mdl-layout__header-row">
+                        <!-- Title -->
+                        <span class="mdl-layout-title">truYum</span>
+                        <!-- Icon -->
+                        <img class="mdl-layout-icon logo" src="images/truyum-logo-light.png"></img>
+                        <!-- Add spacer, to align navigation to the right -->
+                        <div class="mdl-layout-spacer"></div>
+                        <!-- Navigation -->
+                        <nav class="mdl-navigation">
+                            <a class="mdl-navigation__link" href="menu-item-list-admin.html">Menu</a>
+                        </nav>
+                    </div>
+                </header>
+                <div class="mdl-layout__drawer">
+                    <span class="mdl-layout-title">Select Role</span>
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link" href="menu-item-list-admin.html">Admin</a>
+                        <a class="mdl-navigation__link" href="menu-item-list-customer.html">Customer</a>
+                    </nav>
+                </div>
+
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">Select Role</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="menu-item-list-admin.html">Admin</a>
+                    <a class="mdl-navigation__link" href="menu-item-list-customer.html">Customer</a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <!-- Your content goes here -->
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--3-col"></div>
+                        <div class="mdl-cell--6-col">
+                            <caption>
+                                <h3>Edit Menu Item</h3>
+                                <p id="message"></p>
+                            </caption>
+
+
+                            <form action="www.google.com" method="get">
+
+                 <div class="form-group">
+                 <label for="pname">Name:</label>
+                 <input type="text" class="form-control" name="" id="prodname">  
+                 </div>
+          
+
+
+                 <div class="form-row">
+                <div class="form-group col-md-2">
+                <label for="price">Price (Rs.)</label>
+                <input type="text" class="form-control" name="" id="price">
+                </div>
+
+
+
+
+            <div class="form-group col-md-2" style="margin: 0px 20px;">
+                    <label for="active">Active</label><br>
+                    <div style="padding: 5px;">
+                    <input type="radio" name= "rdoActive" id="rdoYes"><label> Yes </label>&nbsp;&nbsp;
+                   <input type="radio" name= "rdoActive" id="rdoNo"><label> No </label>
+                   </div>
+                </div>
+
+
+
+          <div class="form-group col-md-3">
+         <label for="dateOfLaunch">Date of Launch</label>
+         <input type= "text" class="form-control"  name="" id="dateofLaunch">
+         </div>
+
+
+
+<div class="form-group col-md-3">
+        <label for="category">Category</label>
+    <select name="" id="category" class="form-control" ></select>
+</div>
+</div>
+
+
+<div class="form-group">
+        <div class="form-check">
+    <input class="form-check-input" type="checkbox" name="" id="freeDelivery">
+    <label class="form-check-label" for="gridCheck">
+            Free Delivery
+        </label>
+    </div>
+</div>
+
+
+
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+    type="button" id="save" onclick=" fnSave();window.location.href='edit-menu-item-status.html'"> Save  </button>
+                        </form>
+    
+                    </div>
+                    <div class="mdl-cell mdl-cell--3-col"></div>
+                </div>
+            </div>
+        </main>
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__left-section">
+                <div class="mdl-logo">Copyright &copy; 2019</div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>

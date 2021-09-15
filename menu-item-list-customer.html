@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link type="text/css" rel="stylesheet" href="./style/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <title>Menu Item List Customer</title>
+
+
+
+  
+
+<script>
+    
+   function fnLoad()
+    {
+                   //store data but only once
+                   var str=`Sandwich,Rs. 99.00,Yes,15/03/2017,Main Course,Yes;
+                   Burger,Rs.129.00,Yes,23/12/2017,Main Course,No;
+                   Pizza,Rs. 149.00,Yes,21/08/2017,Main Course,No;
+                   French Fries,Rs.57.00,No,02/07/2017,Starters,Yes;
+                   Chocolate Brownie,Rs.32.00,Yes,02/11/2022,Dessert,Yes`;
+
+                   localStorage.setItem("menu",str);   
+
+                    var menu=localStorage.getItem("menu");
+
+                        //going to loop the menu by  By;
+
+                          var rows=menu.split(";"); 
+                           //The split() method is used to split a string into an array of substrings, 
+                               //and returns the new array. Tip: If an empty string ("") is used as the separator, 
+                          //the string is split between each character.
+
+
+                        // now data becomes like this 
+                       //Sandwich,Rs. 99.00,Yes,15/03/2017,Main Course,Yes,
+                      // Burger,Rs.129.00,Yes,23/12/2017,Main Course,No,
+                    // Pizza,Rs. 149.00,Yes,21/08/2017,Main Course,No,
+                   // French Fries,Rs.57.00,No,02/07/2017,Starters,Yes,
+                 // Chocolate Brownie,Rs.32.00,Yes,02/11/2022,Dessert,Yes
+
+               //alert(rows.length);
+    
+                 var str='';
+                   for(var i=0;i<rows.length;i++)
+            {
+        
+                      var cols=rows[i].split(","); //in ist iteration cols= Sandwich,Rs. 99.00,Yes,15/03/2017,Main  Course,Yes
+                         //check if item is active
+
+                   if(cols[2]=="No")
+                   continue;
+                       //check if date of launch is in future
+                   var arr=cols[3].split("/");
+                   var dt=new Date(arr[2],arr[1],arr[0]);
+                   var x=rows[i];
+                   if(arr[2]>2020)
+                   continue;
+
+                    //display a row
+                  str=str+"<TR>";
+                   //loop for columns
+          
+                       //alert(cols.length);
+                        //alert(cols);
+      
+                 str=str+"<TD>";
+                      // alert(cols[j]);
+                 str=str+cols[0];     
+                 str=str+"</TD>";
+
+
+                 str=str+"<TD>";
+                     // alert(cols[j]);
+                  str=str+cols[5];          
+                 str=str+"</TD>";
+
+
+                 str=str+"<TD>";
+                      // alert(cols[j]);
+                 str=str+cols[1];          
+                 str=str+"</TD>";
+
+                 str=str+"<TD>";
+                     // alert(cols[j]);
+                 str=str+cols[4];          
+                 str=str+"</TD>";
+
+
+                    /* str=str+'<TD><<a href="#"INPUT TYPE = BUTTON VALUE="Add to Cart" onclick="';
+                    str=str+"fn2('";
+                   str=str+x.trim();
+                    str=str+"')";
+                      str=str+'" /></TD>';
+                       str=str+"</TR>" */
+
+        
+        
+                 str=str+'<TD><a href="menu-item-list-customer-notification.html" onclick="fn2(\''+x.trim()+'\')">Add to Cart</a></TD></TR>';
+       
+                     // OR str=str+'<TD><a href="#" onclick="'+"fn2('"+x.trim()+'\' )">LINK</a></TD></TR>';
+
+                                    /*
+                                    OR
+                                   str=str+"fn2('";
+                                   str=str+x.trim();
+                                   str=str+'\' )">LINK</a>';
+                                    str=str+"</TD>";
+                                    str=str+"</TR>";
+                                     */
+                                     //  OR INPUT TYPE = BUTTON VALUE="Add to Cart" onclick="';
+                                    /* str=str+"fn2('";
+                                    str=str+x.trim();
+                                    str=str+'\' )">LINK</a>';
+                                    str=str+"</TD>";
+                                      str=str+"</TR>";
+                                       */
+            }
+
+            str=str+"</TABLE>";
+          //  alert(str);
+           document.getElementById("customer-table").innerHTML=str;
+    }
+
+      
+
+    function fn2(x)
+    {
+     //   alert("New item to be added to cart:"+x);
+        //code to add to cart
+        //store this menu in the cart
+       // localStorage.setItem("cart","");
+
+        var cart=localStorage.getItem("cart");
+        //alert("beforing adding, cart has:"+cart);
+        if(cart==undefined || cart=="" || cart==null || cart=='null')
+        {
+              //firsttime adding to cart
+      //      alert('inside true');
+            cart="";
+        }   
+        
+                cart=cart+x+";";
+              //  document.getElementById("message").innerHTML="<font color=green><br>"+"Item added to Cart Successfully";
+       // alert("after adding to the cart, cart is :"+cart);
+        localStorage.setItem("cart",cart);
+       // alert(localStorage.getItem("cart"));
+
+       
+    }
+
+</script>
+
+
+</head>
+<body onload="fnLoad()">
+
+    <!--<p id="message"> </p> 
+    <p align="right"<a href=cart.html> Cart </p>-->
+    
+
+        <input type="hidden" id="page" value="customer">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">truYum</span>
+                    <!-- Icon -->
+                    <img class="mdl-layout-icon logo" src="images/truyum-logo-light.png"></img>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation -->
+                    <nav class="mdl-navigation">
+                            <a class="mdl-navigation__link" href="menu-item-list-admin.html">Menu</a>
+                            <a class="mdl-navigation__link" href="cart.html">Cart</a>
+                          
+
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">Select Role</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="menu-item-list-admin.html">Admin</a>
+                    <a class="mdl-navigation__link" href="menu-item-list-customer.html">Customer</a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <!-- Your content goes here -->
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--3-col"></div>
+                        <div class="mdl-cell--6-col">
+
+
+
+                                <table class="mdl-data-table mdl-js-data-table">
+                                        <caption>
+                                            <h3>Menu Items</h3>
+                                        </caption>
+                                        <br><br>
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: left">Name</th>
+                                                <th style="text-align: center">Free Delivery</th>
+                                                <th style="text-align: right">Price</th>
+                                                <th style="text-align: center">Category</th>
+                                                <th style="text-align: center">Action</th>
+                                            </tr>
+                                        </thead>
+
+
+
+                                        <tbody id="customer-table">
+
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--3-col"></div>
+                                </div>
+                            </div>
+                        </main>
+                        <footer class="mdl-mini-footer">
+                            <div class="mdl-mini-footer__left-section">
+                                <div class="mdl-logo">Copyright &copy; 2019</div>
+                            </div>
+                        </footer>
+                    </div>
+
+
+
+</body>
+</html>
